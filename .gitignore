@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+
+node_modules/
+dist/
+build/
+.next/
+.vite/
+
+*.log
+*.tmp
+*.sqlite
+*.sqlite3
+
+.DS_Store
+Thumbs.db

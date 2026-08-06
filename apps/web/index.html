@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Career Copilot CN</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Career Copilot CN</p>
+          <h1>国内半自动求职助手</h1>
+        </div>
+        <button id="loadSampleBtn" class="icon-button" title="载入示例岗位">示例</button>
+      </header>
+
+      <section class="workspace">
+        <form id="jobForm" class="panel">
+          <div class="panel-header">
+            <h2>导入岗位</h2>
+            <span>粘贴 JD 或手动录入</span>
+          </div>
+
+          <label>
+            岗位名称
+            <input name="title" placeholder="例如：Java 后端开发工程师" required />
+          </label>
+
+          <label>
+            公司
+            <input name="company" placeholder="例如：星河云数科技有限公司" required />
+          </label>
+
+          <div class="grid-2">
+            <label>
+              城市
+              <input name="location" placeholder="上海 / 杭州 / 远程" />
+            </label>
+            <label>
+              薪资
+              <input name="salary" placeholder="18-30K" />
+            </label>
+          </div>
+
+          <div class="grid-2">
+            <label>
+              来源
+              <select name="source">
+                <option>Boss 直聘</option>
+                <option>猎聘</option>
+                <option>智联招聘</option>
+                <option>前程无忧</option>
+                <option>拉勾</option>
+                <option>脉脉</option>
+                <option>公司官网</option>
+                <option>公众号</option>
+                <option>内推</option>
+                <option>微信群/飞书群</option>
+                <option>其他</option>
+              </select>
+            </label>
+            <label>
+              链接
+              <input name="sourceUrl" placeholder="https://..." />
+            </label>
+          </div>
+
+          <label>
+            岗位 JD
+            <textarea name="description" placeholder="粘贴岗位职责、任职要求、福利待遇等原文" required></textarea>
+          </label>
+
+          <button class="primary" type="submit">分析并加入岗位池</button>
+        </form>
+
+        <section class="panel results">
+          <div class="panel-header">
+            <h2>岗位池</h2>
+            <span id="jobCount">0 个岗位</span>
+          </div>
+          <div id="jobList" class="job-list"></div>
+        </section>
+      </section>
+    </main>
+
+    <template id="jobCardTemplate">
+      <article class="job-card">
+        <div class="job-head">
+          <div>
+            <h3 data-field="title"></h3>
+            <p data-field="company"></p>
+          </div>
+          <select data-field="status">
+            <option>待评估</option>
+            <option>准备投递</option>
+            <option>已投递</option>
+            <option>已沟通</option>
+            <option>已约面</option>
+            <option>Offer</option>
+            <option>不合适</option>
+          </select>
+        </div>
+        <div class="meta">
+          <span data-field="location"></span>
+          <span data-field="salary"></span>
+          <span data-field="source"></span>
+        </div>
+        <div class="scores">
+          <div>
+            <strong data-field="matchScore"></strong>
+            <span>匹配度</span>
+          </div>
+          <div>
+            <strong data-field="trustScore"></strong>
+            <span>可信度</span>
+          </div>
+        </div>
+        <div class="analysis">
+          <h4>风险提示</h4>
+          <ul data-field="risks"></ul>
+          <h4>建议追问</h4>
+          <ul data-field="questions"></ul>
+          <h4>开场白</h4>
+          <p data-field="opening"></p>
+        </div>
+      </article>
+    </template>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

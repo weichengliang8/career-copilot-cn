@@ -1,0 +1,24 @@
+[
+  {
+    "id": "job_001",
+    "title": "Java 后端开发工程师",
+    "company": "星河云数科技有限公司",
+    "location": "上海 浦东新区",
+    "salary": "18-30K",
+    "source": "Boss 直聘",
+    "sourceUrl": "https://example.com/jobs/java-backend",
+    "description": "负责业务系统后端开发，参与接口设计、数据库建模和性能优化。要求熟悉 Java、Spring Boot、MySQL、Redis，有 Docker 使用经验优先。",
+    "status": "待评估"
+  },
+  {
+    "id": "job_002",
+    "title": "AI 软件工程师",
+    "company": "某某教育咨询有限公司",
+    "location": "杭州",
+    "salary": "25-40K",
+    "source": "微信群",
+    "sourceUrl": "",
+    "description": "无经验可投，入职前统一培训，培训后推荐高薪岗位。名额有限，先到先得。",
+    "status": "待评估"
+  }
+]
