@@ -40,7 +40,7 @@ async function handleSearch(url, res) {
   const keyword = clean(url.searchParams.get("keyword") || "后端");
   const city = clean(url.searchParams.get("city") || "");
   const source = clean(url.searchParams.get("source") || "cn");
-  const sourceUrl = cleanUrl(url.searchParams.get("sourceUrl") || "");
+  const sourceUrl = String(url.searchParams.get("sourceUrl") || "").trim();
 
   if (!keyword) {
     sendJson(res, 400, { error: "missing_keyword", message: "请输入岗位关键词。" });
@@ -49,8 +49,9 @@ async function handleSearch(url, res) {
 
   const tasks = [];
   if (source === "cn") tasks.push(searchCnPortals(keyword, city));
+  if (source === "site") tasks.push(searchVerticalSite(keyword, city, sourceUrl));
   if (source === "v2ex") tasks.push(searchV2ex(keyword, city));
-  if (source === "url") tasks.push(fetchPublicJobPage(sourceUrl, keyword, city));
+  if (source === "url") tasks.push(fetchPublicJobPage(cleanUrl(sourceUrl), keyword, city));
 
   const settled = await Promise.allSettled(tasks);
   const jobs = settled.flatMap((result) => (result.status === "fulfilled" ? result.value : []));
@@ -64,6 +65,27 @@ async function handleSearch(url, res) {
     jobs: dedupeJobs(jobs).slice(0, 24),
     errors,
   });
+}
+
+function searchVerticalSite(keyword, city, site) {
+  const host = cleanSite(site);
+  const query = [city, keyword].filter(Boolean).join(" ");
+  const baiduQuery = encodeURIComponent(`site:${host} ${query} 招聘`);
+  return [
+    {
+      id: `site_${host}`,
+      title: `${host} 站内搜索：${query}`,
+      company: "行业垂直网站入口",
+      location: city || "不限城市",
+      salary: "打开后筛选",
+      source: host,
+      sourceUrl: `https://www.baidu.com/s?wd=${baiduQuery}`,
+      description: "打开后在这个行业网站里找真实岗位，再复制 JD 或岗位链接回来分析。",
+      status: "搜索入口",
+      kind: "portal",
+      discoveredAt: new Date().toISOString(),
+    },
+  ];
 }
 
 function searchCnPortals(keyword, city) {
@@ -206,6 +228,14 @@ function cleanUrl(value) {
   return url.toString();
 }
 
+function cleanSite(value) {
+  const text = String(value || "").trim();
+  if (!text) throw new Error("请输入行业垂直网站域名");
+  const host = text.includes("://") ? new URL(text).hostname : text.split("/")[0];
+  if (!/^[a-z0-9.-]+\.[a-z]{2,}$/i.test(host)) throw new Error("请输入有效域名，例如 buildinghr.com");
+  return host.replace(/^www\./i, "");
+}
+
 function dedupeJobs(jobs) {
   const seen = new Set();
   return jobs.filter((job) => {
@@ -312,4 +342,5 @@ function selfCheck() {
   assert.equal(extractSalary("薪资 18-30K，13薪"), "18-30K");
   assert.equal(htmlToText("<title>岗位</title><script>bad()</script> Java"), "岗位 Java");
   assert.equal(searchCnPortals("工程造价", "上海").length, 4);
+  assert.equal(searchVerticalSite("工程造价", "上海", "buildinghr.com")[0].kind, "portal");
 }
