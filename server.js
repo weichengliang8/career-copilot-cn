@@ -39,7 +39,7 @@ server.listen(PORT, () => {
 async function handleSearch(url, res) {
   const keyword = clean(url.searchParams.get("keyword") || "后端");
   const city = clean(url.searchParams.get("city") || "");
-  const source = clean(url.searchParams.get("source") || "cn");
+  const source = clean(url.searchParams.get("source") || "auto");
   const sourceUrl = String(url.searchParams.get("sourceUrl") || "").trim();
 
   if (!keyword) {
@@ -48,6 +48,7 @@ async function handleSearch(url, res) {
   }
 
   const tasks = [];
+  if (source === "auto") tasks.push(searchSmart(keyword, city));
   if (source === "cn") tasks.push(searchCnPortals(keyword, city));
   if (source === "site") tasks.push(searchVerticalSite(keyword, city, sourceUrl));
   if (source === "v2ex") tasks.push(searchV2ex(keyword, city));
@@ -65,6 +66,10 @@ async function handleSearch(url, res) {
     jobs: dedupeJobs(jobs).slice(0, 24),
     errors,
   });
+}
+
+function searchSmart(keyword, city) {
+  return [...recommendedSites(keyword, city), ...searchCnPortals(keyword, city)];
 }
 
 function searchVerticalSite(keyword, city, site) {
@@ -380,4 +385,5 @@ function selfCheck() {
   assert.equal(searchCnPortals("工程造价", "上海").length, 4);
   assert.equal(searchVerticalSite("工程造价", "上海", "buildinghr.com")[0].kind, "portal");
   assert.ok(searchVerticalSite("工程造价", "上海", "").length > 0);
+  assert.ok(searchSmart("工程造价", "上海").length > 4);
 }

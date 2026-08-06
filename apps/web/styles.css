@@ -116,6 +116,23 @@ form,
   gap: 13px;
 }
 
+.quick-searches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.quick-searches button {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--brand);
+  cursor: pointer;
+  padding: 7px 12px;
+  font-weight: 700;
+}
+
 .search-form {
   grid-template-columns: minmax(200px, 1fr) minmax(130px, 180px) minmax(150px, 180px) minmax(220px, 1fr) auto;
   align-items: end;

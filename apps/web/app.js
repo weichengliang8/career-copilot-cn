@@ -49,6 +49,7 @@ const jobTemplate = document.querySelector("#jobCardTemplate");
 const resultTemplate = document.querySelector("#resultCardTemplate");
 const loadSampleBtn = document.querySelector("#loadSampleBtn");
 const clearJobsBtn = document.querySelector("#clearJobsBtn");
+const quickSearches = document.querySelectorAll("[data-keyword]");
 
 let jobs = loadJobs();
 
@@ -93,6 +94,14 @@ clearJobsBtn.addEventListener("click", () => {
   jobs = [];
   saveJobs();
   renderJobs();
+});
+
+quickSearches.forEach((button) => {
+  button.addEventListener("click", () => {
+    searchForm.elements.keyword.value = button.dataset.keyword;
+    searchForm.elements.source.value = "auto";
+    searchForm.requestSubmit();
+  });
 });
 
 function addJob(job) {

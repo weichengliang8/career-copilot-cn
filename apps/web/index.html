@@ -40,6 +40,7 @@
           <label>
             来源
             <select name="source">
+              <option value="auto">智能推荐</option>
               <option value="cn">国内招聘搜索入口</option>
               <option value="site">行业垂直网站搜索</option>
               <option value="v2ex">V2EX Jobs</option>
@@ -52,6 +53,14 @@
           </label>
           <button class="primary" type="submit">检索职位</button>
         </form>
+
+        <div class="quick-searches">
+          <button type="button" data-keyword="工程造价">工程造价</button>
+          <button type="button" data-keyword="护士">护士</button>
+          <button type="button" data-keyword="教师">教师</button>
+          <button type="button" data-keyword="外贸运营">外贸运营</button>
+          <button type="button" data-keyword="Java 后端">Java 后端</button>
+        </div>
 
         <div id="searchResults" class="search-results"></div>
       </section>
