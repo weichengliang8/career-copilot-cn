@@ -9,6 +9,7 @@
 Career Copilot CN 的第一目标是做一个本地优先的求职工作台：
 
 - 多来源岗位统一导入
+- 公开来源职位检索
 - 岗位匹配度评分
 - 岗位可信度和风险提示
 - 简历修改建议
@@ -19,6 +20,7 @@ Career Copilot CN 的第一目标是做一个本地优先的求职工作台：
 ## MVP 功能
 
 - 粘贴岗位 JD，提取岗位关键信息
+- 从 GitHub Issues 和 V2EX Jobs 检索公开招聘信息
 - 录入公司、岗位、薪资、城市、来源链接
 - 根据个人资料生成匹配分析
 - 根据规则识别虚高薪资、培训贷、外包模糊、收费等风险信号
@@ -27,13 +29,19 @@ Career Copilot CN 的第一目标是做一个本地优先的求职工作台：
 
 ## 当前原型
 
-第一版原型是一个无需安装依赖的本地页面：
+第一版原型包含一个本地服务和网页界面：
 
-```text
-apps/web/index.html
+```bash
+npm start
 ```
 
-直接用浏览器打开即可查看交互雏形。后续可以升级成 React/Next.js + SQLite + AI 接口。
+然后打开：
+
+```text
+http://localhost:5173
+```
+
+当前支持从 GitHub Issues 和 V2EX Jobs 这类公开来源检索职位，并把结果导入岗位池。后续可以升级成 React/Next.js + SQLite + AI 接口。
 
 ## 项目结构
 
@@ -49,6 +57,8 @@ career-copilot-cn/
     sample-jobs.json     # 示例岗位
   README.md
   LICENSE
+  package.json
+  server.js
 ```
 
 ## 设计原则
@@ -62,6 +72,7 @@ career-copilot-cn/
 ## Roadmap
 
 - [ ] 本地岗位池和看板
+- [x] 公开来源职位检索
 - [ ] 个人资料库
 - [ ] 可信度评分规则引擎
 - [ ] 匹配度评分

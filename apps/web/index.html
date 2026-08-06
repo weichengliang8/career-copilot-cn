@@ -13,14 +13,51 @@
           <p class="eyebrow">Career Copilot CN</p>
           <h1>国内半自动求职助手</h1>
         </div>
-        <button id="loadSampleBtn" class="icon-button" title="载入示例岗位">示例</button>
+        <div class="top-actions">
+          <button id="loadSampleBtn" class="secondary" type="button">示例</button>
+          <a class="secondary link-button" href="https://github.com/weichengliang8/career-copilot-cn" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
       </header>
+
+      <section class="search-panel">
+        <div class="panel-header">
+          <div>
+            <h2>职位发现</h2>
+            <span>从公开来源检索岗位，再导入岗位池</span>
+          </div>
+          <span id="searchStatus">待搜索</span>
+        </div>
+
+        <form id="searchForm" class="search-form">
+          <label>
+            岗位关键词
+            <input name="keyword" placeholder="Java 后端 / AI 工程师 / 产品经理" value="Java 后端" required />
+          </label>
+          <label>
+            城市
+            <input name="city" placeholder="上海 / 杭州 / 远程" />
+          </label>
+          <label>
+            来源
+            <select name="source">
+              <option value="all">全部公开来源</option>
+              <option value="github">GitHub Issues</option>
+              <option value="v2ex">V2EX Jobs</option>
+            </select>
+          </label>
+          <button class="primary" type="submit">检索职位</button>
+        </form>
+
+        <div id="searchResults" class="search-results"></div>
+      </section>
 
       <section class="workspace">
         <form id="jobForm" class="panel">
           <div class="panel-header">
-            <h2>导入岗位</h2>
-            <span>粘贴 JD 或手动录入</span>
+            <div>
+              <h2>手动导入</h2>
+              <span>粘贴 JD 或补充检索结果</span>
+            </div>
           </div>
 
           <label>
@@ -58,6 +95,8 @@
                 <option>公众号</option>
                 <option>内推</option>
                 <option>微信群/飞书群</option>
+                <option>GitHub Issues</option>
+                <option>V2EX Jobs</option>
                 <option>其他</option>
               </select>
             </label>
@@ -77,13 +116,35 @@
 
         <section class="panel results">
           <div class="panel-header">
-            <h2>岗位池</h2>
-            <span id="jobCount">0 个岗位</span>
+            <div>
+              <h2>岗位池</h2>
+              <span id="jobCount">0 个岗位</span>
+            </div>
+            <button id="clearJobsBtn" class="danger" type="button">清空</button>
           </div>
           <div id="jobList" class="job-list"></div>
         </section>
       </section>
     </main>
+
+    <template id="resultCardTemplate">
+      <article class="result-card">
+        <div>
+          <h3 data-field="title"></h3>
+          <p data-field="company"></p>
+        </div>
+        <div class="meta">
+          <span data-field="location"></span>
+          <span data-field="salary"></span>
+          <span data-field="source"></span>
+        </div>
+        <p data-field="description"></p>
+        <div class="card-actions">
+          <a data-field="sourceUrl" href="#" target="_blank" rel="noreferrer">查看原文</a>
+          <button class="primary small" data-action="import" type="button">导入岗位池</button>
+        </div>
+      </article>
+    </template>
 
     <template id="jobCardTemplate">
       <article class="job-card">

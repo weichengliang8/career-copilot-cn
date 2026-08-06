@@ -7,9 +7,7 @@
   --line: #d9e0dc;
   --brand: #176b57;
   --brand-strong: #0f4d3f;
-  --warn: #b85c00;
-  --risk: #9d2732;
-  --ok: #1f7a4d;
+  --danger: #9d2732;
 }
 
 * {
@@ -31,16 +29,29 @@ textarea {
 }
 
 .shell {
-  width: min(1180px, calc(100% - 32px));
+  width: min(1200px, calc(100% - 32px));
   margin: 0 auto;
   padding: 28px 0;
 }
 
-.topbar {
+.topbar,
+.top-actions,
+.panel-header,
+.job-head,
+.card-actions {
   display: flex;
   align-items: center;
+  gap: 12px;
+}
+
+.topbar,
+.panel-header,
+.job-head,
+.card-actions {
   justify-content: space-between;
-  gap: 16px;
+}
+
+.topbar {
   margin-bottom: 20px;
 }
 
@@ -64,13 +75,7 @@ h1 {
   line-height: 1.2;
 }
 
-.workspace {
-  display: grid;
-  grid-template-columns: minmax(320px, 420px) 1fr;
-  gap: 18px;
-  align-items: start;
-}
-
+.search-panel,
 .panel {
   background: var(--surface);
   border: 1px solid var(--line);
@@ -78,11 +83,19 @@ h1 {
   padding: 18px;
 }
 
+.search-panel {
+  margin-bottom: 18px;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(320px, 420px) 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
 .panel-header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
+  align-items: flex-start;
   margin-bottom: 16px;
 }
 
@@ -95,9 +108,17 @@ h1 {
   font-size: 13px;
 }
 
-form {
+form,
+.analysis,
+.job-list,
+.search-results {
   display: grid;
   gap: 13px;
+}
+
+.search-form {
+  grid-template-columns: minmax(220px, 1fr) minmax(160px, 220px) minmax(180px, 220px) auto;
+  align-items: end;
 }
 
 label {
@@ -130,44 +151,69 @@ textarea {
 }
 
 .primary,
-.icon-button {
-  border: 0;
+.secondary,
+.danger,
+.link-button {
+  min-height: 40px;
   border-radius: 6px;
   cursor: pointer;
   font-weight: 700;
 }
 
 .primary {
-  min-height: 42px;
+  border: 0;
   background: var(--brand);
   color: white;
 }
 
-.primary:hover,
-.icon-button:hover {
+.primary:hover {
   background: var(--brand-strong);
 }
 
-.icon-button {
-  min-width: 64px;
-  height: 38px;
+.primary:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.secondary,
+.danger {
+  background: #fff;
+  border: 1px solid var(--line);
+  color: var(--ink);
   padding: 0 14px;
-  background: var(--brand);
-  color: #fff;
 }
 
-.job-list {
-  display: grid;
-  gap: 14px;
+.danger {
+  color: var(--danger);
 }
 
-.empty {
+.link-button {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.small {
+  min-height: 34px;
+  padding: 0 12px;
+}
+
+.empty,
+.notice {
   color: var(--muted);
-  padding: 28px 0;
+  padding: 18px 0;
   text-align: center;
 }
 
-.job-card {
+.notice {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.job-card,
+.result-card {
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 14px;
@@ -176,19 +222,20 @@ textarea {
 }
 
 .job-head {
-  display: flex;
-  justify-content: space-between;
-  gap: 14px;
+  align-items: flex-start;
 }
 
-.job-head h3 {
+.job-head h3,
+.result-card h3 {
   font-size: 17px;
   line-height: 1.35;
 }
 
-.job-head p {
+.job-head p,
+.result-card p,
+.analysis p {
   color: var(--muted);
-  margin-top: 4px;
+  line-height: 1.6;
 }
 
 .job-head select {
@@ -233,11 +280,6 @@ textarea {
   font-size: 13px;
 }
 
-.analysis {
-  display: grid;
-  gap: 8px;
-}
-
 .analysis h4 {
   font-size: 14px;
   margin-top: 4px;
@@ -253,25 +295,29 @@ textarea {
   margin-top: 4px;
 }
 
-.analysis p {
-  color: var(--muted);
-  line-height: 1.6;
+.card-actions a {
+  color: var(--brand);
+  font-weight: 700;
+  text-decoration: none;
 }
 
-@media (max-width: 860px) {
-  .workspace {
+@media (max-width: 960px) {
+  .workspace,
+  .search-form {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 560px) {
   .shell {
-    width: min(100% - 20px, 1180px);
+    width: min(100% - 20px, 1200px);
     padding-top: 18px;
   }
 
-  .topbar {
-    align-items: flex-start;
+  .topbar,
+  .job-head,
+  .card-actions {
+    display: grid;
   }
 
   h1 {
@@ -281,10 +327,6 @@ textarea {
   .grid-2,
   .scores {
     grid-template-columns: 1fr;
-  }
-
-  .job-head {
-    display: grid;
   }
 
   .job-head select {

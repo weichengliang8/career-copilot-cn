@@ -1,0 +1,21 @@
+{
+  "name": "career-copilot-cn",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A local-first career copilot for Chinese job search workflows.",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "job-search",
+    "career",
+    "resume",
+    "china",
+    "ai"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  }
+}
