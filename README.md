@@ -32,7 +32,7 @@ Career Copilot CN 的第一目标是做一个本地优先的求职工作台：
 第一版原型包含一个本地服务和网页界面：
 
 ```bash
-npm start
+node server.js
 ```
 
 然后打开：
@@ -42,6 +42,8 @@ http://localhost:5173
 ```
 
 当前支持从 GitHub Issues 和 V2EX Jobs 这类公开来源检索职位，并把结果导入岗位池。后续可以升级成 React/Next.js + SQLite + AI 接口。
+
+如果使用 Windows PowerShell，也可以运行 `npm.cmd start`。直接运行 `npm start` 可能会被本机脚本执行策略拦截。
 
 ## 项目结构
 
