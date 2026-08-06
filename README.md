@@ -54,6 +54,8 @@ Windows 也可以直接双击 `start-career-copilot.cmd`，它会启动本地服
 career-copilot-cn/
   apps/
     web/                 # 本地网页原型
+  data/
+    vertical-sites.json  # 行业垂直招聘网站资源包
   docs/
     product-plan.md      # 产品计划
     data-schema.md       # 数据结构

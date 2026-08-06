@@ -4,6 +4,7 @@ const path = require("node:path");
 
 const PORT = Number(process.env.PORT || 5173);
 const WEB_ROOT = path.join(__dirname, "apps", "web");
+const verticalSiteGroups = JSON.parse(fs.readFileSync(path.join(__dirname, "data", "vertical-sites.json"), "utf8"));
 
 if (process.argv.includes("--self-check")) {
   selfCheck();
@@ -81,47 +82,27 @@ function searchVerticalSite(keyword, city, site) {
 
 function recommendedSites(keyword, city) {
   const text = keyword.toLowerCase();
-  const groups = [
-    {
-      test: /工程|造价|建筑|土木|施工|建造|监理|预算|招投标/,
-      label: "建筑工程垂直入口",
-      sites: ["buildinghr.com", "job.buildhr.com", "jzrc.net"],
-    },
-    {
-      test: /医疗|护士|医生|药师|医院|临床|影像|检验/,
-      label: "医疗健康垂直入口",
-      sites: ["jobmd.cn", "doctorjob.com.cn"],
-    },
-    {
-      test: /教师|教育|教培|课程|学校|幼师/,
-      label: "教育行业垂直入口",
-      sites: ["jiaoshi.com.cn", "teacheredu.cn"],
-    },
-    {
-      test: /外贸|跨境|电商|亚马逊|运营/,
-      label: "外贸电商垂直入口",
-      sites: ["cifnews.com", "ennews.com"],
-    },
-  ];
-
-  const group = groups.find((item) => item.test.test(text));
+  const group = verticalSiteGroups.find((item) => new RegExp(item.keywords, "i").test(text));
   if (!group) return [];
-  return group.sites.map((site) => sitePortal(site, keyword, city, group.label)).flat();
+  return group.sites.map((site) => sitePortal(site.host, keyword, city, group.label, site.name, site.url)).flat();
 }
 
-function sitePortal(host, keyword, city, label) {
+function sitePortal(host, keyword, city, label, name = host, directUrl = "") {
   const query = [city, keyword].filter(Boolean).join(" ");
   const baiduQuery = encodeURIComponent(`site:${host} ${query} 招聘`);
+  const url = directUrl || `https://www.baidu.com/s?wd=${baiduQuery}`;
   return [
     {
       id: `site_${host}`,
-      title: `${host} 站内搜索：${query}`,
+      title: `${name}：${query}`,
       company: label,
       location: city || "不限城市",
       salary: "打开后筛选",
       source: host,
-      sourceUrl: `https://www.baidu.com/s?wd=${baiduQuery}`,
-      description: "打开后在这个行业网站里找真实岗位，再复制 JD 或岗位链接回来分析。",
+      sourceUrl: url,
+      description: directUrl
+        ? "内置垂直网站库入口。打开后在站内搜索岗位，再复制 JD 或岗位链接回来分析。"
+        : "未找到稳定直达页，先用搜索引擎做站内检索。",
       status: "搜索入口",
       kind: "portal",
       discoveredAt: new Date().toISOString(),
@@ -386,4 +367,5 @@ function selfCheck() {
   assert.equal(searchVerticalSite("工程造价", "上海", "buildinghr.com")[0].kind, "portal");
   assert.ok(searchVerticalSite("工程造价", "上海", "").length > 0);
   assert.ok(searchSmart("工程造价", "上海").length > 4);
+  assert.ok(recommendedSites("护士", "上海").some((job) => job.source === "jobmd.cn"));
 }

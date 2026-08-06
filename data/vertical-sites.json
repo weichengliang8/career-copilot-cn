@@ -1,0 +1,74 @@
+[
+  {
+    "keywords": "工程|造价|建筑|土木|施工|建造|监理|预算|招投标|资料员|安全员",
+    "label": "建筑工程垂直入口",
+    "sites": [
+      { "name": "筑招网", "host": "m.zhupinhr.com", "url": "https://m.zhupinhr.com/zhaopin/" },
+      { "name": "建筑英才网", "host": "buildhr.com", "url": "https://www.buildhr.com/jobs/fdc/" },
+      { "name": "一览建筑英才网", "host": "jz.job1001.com" },
+      { "name": "建筑人才网", "host": "buildjob.net" }
+    ]
+  },
+  {
+    "keywords": "医疗|护士|医生|药师|医院|临床|影像|检验|康复|口腔",
+    "label": "医疗健康垂直入口",
+    "sites": [
+      { "name": "丁香人才", "host": "jobmd.cn", "url": "https://www.jobmd.cn/index.jsp" },
+      { "name": "医才网", "host": "ecaihr.com", "url": "https://www.ecaihr.com/" },
+      { "name": "医脉同道", "host": "medlinker.com" }
+    ]
+  },
+  {
+    "keywords": "教师|教育|教培|课程|学校|幼师|辅导员|高校|外教",
+    "label": "教育行业垂直入口",
+    "sites": [
+      { "name": "高校人才网", "host": "gaoxiaojob.com" },
+      { "name": "教师招聘网", "host": "jiaoshi.com.cn" },
+      { "name": "聘外网", "host": "teacherrecord.cn" },
+      { "name": "外教中国", "host": "teslcn.com" }
+    ]
+  },
+  {
+    "keywords": "外贸|跨境|电商|亚马逊|运营|独立站|速卖通|虾皮",
+    "label": "外贸电商垂直入口",
+    "sites": [
+      { "name": "雨果跨境", "host": "cifnews.com" },
+      { "name": "外贸英才网", "host": "tradehr.com" }
+    ]
+  },
+  {
+    "keywords": "应届|校招|实习|管培生|校园招聘|毕业生",
+    "label": "应届校招垂直入口",
+    "sites": [
+      { "name": "牛客", "host": "nowcoder.com" },
+      { "name": "实习僧", "host": "shixiseng.com" },
+      { "name": "应届生求职网", "host": "yingjiesheng.com" },
+      { "name": "工作啦", "host": "goworkla.cn", "url": "https://www.goworkla.cn/" }
+    ]
+  },
+  {
+    "keywords": "国企|央企|事业单位|公务员|编制|人社|政府",
+    "label": "国企事业单位入口",
+    "sites": [
+      { "name": "国聘", "host": "iguopin.com" },
+      { "name": "高校人才网", "host": "gaoxiaojob.com" }
+    ]
+  },
+  {
+    "keywords": "蓝领|普工|技工|焊工|司机|保安|服务员|店长|餐饮|家政",
+    "label": "蓝领本地生活入口",
+    "sites": [
+      { "name": "58 同城招聘", "host": "58.com" },
+      { "name": "鱼泡直聘", "host": "yupao.com" },
+      { "name": "店长直聘", "host": "dianzhangzhipin.com" }
+    ]
+  },
+  {
+    "keywords": "远程|自由职业|兼职|外包|接单",
+    "label": "远程自由职业入口",
+    "sites": [
+      { "name": "电鸭社区", "host": "eleduck.com" },
+      { "name": "程序员客栈", "host": "proginn.com" }
+    ]
+  }
+]
