@@ -20,7 +20,8 @@ Career Copilot CN 的第一目标是做一个本地优先的求职工作台：
 ## MVP 功能
 
 - 粘贴岗位 JD，提取岗位关键信息
-- 从 GitHub Issues 和 V2EX Jobs 检索公开招聘信息
+- 从 V2EX Jobs 检索公开招聘信息
+- 抓取用户粘贴的公开岗位页面
 - 录入公司、岗位、薪资、城市、来源链接
 - 根据个人资料生成匹配分析
 - 根据规则识别虚高薪资、培训贷、外包模糊、收费等风险信号
@@ -41,7 +42,7 @@ node server.js
 http://localhost:5173
 ```
 
-当前支持从 GitHub Issues 和 V2EX Jobs 这类公开来源检索职位，并把结果导入岗位池。后续可以升级成 React/Next.js + SQLite + AI 接口。
+当前支持从 V2EX Jobs 检索职位，也支持粘贴公开岗位页面链接并导入岗位池。后续可以升级成 React/Next.js + SQLite + AI 接口。
 
 如果使用 Windows PowerShell，也可以运行 `npm.cmd start`。直接运行 `npm start` 可能会被本机脚本执行策略拦截。
 

@@ -23,7 +23,7 @@
         <div class="panel-header">
           <div>
             <h2>职位发现</h2>
-            <span>从公开来源检索岗位，再导入岗位池</span>
+            <span>先用可信入口，少一点假结果</span>
           </div>
           <span id="searchStatus">待搜索</span>
         </div>
@@ -40,10 +40,13 @@
           <label>
             来源
             <select name="source">
-              <option value="all">全部公开来源</option>
-              <option value="github">GitHub Issues</option>
               <option value="v2ex">V2EX Jobs</option>
+              <option value="url">公开页面链接</option>
             </select>
+          </label>
+          <label>
+            页面链接
+            <input name="sourceUrl" placeholder="公司官网/招聘帖链接" />
           </label>
           <button class="primary" type="submit">检索职位</button>
         </form>

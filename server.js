@@ -5,6 +5,11 @@ const path = require("node:path");
 const PORT = Number(process.env.PORT || 5173);
 const WEB_ROOT = path.join(__dirname, "apps", "web");
 
+if (process.argv.includes("--self-check")) {
+  selfCheck();
+  process.exit(0);
+}
+
 const mimeTypes = {
   ".html": "text/html; charset=utf-8",
   ".css": "text/css; charset=utf-8",
@@ -34,7 +39,8 @@ server.listen(PORT, () => {
 async function handleSearch(url, res) {
   const keyword = clean(url.searchParams.get("keyword") || "后端");
   const city = clean(url.searchParams.get("city") || "");
-  const source = clean(url.searchParams.get("source") || "all");
+  const source = clean(url.searchParams.get("source") || "v2ex");
+  const sourceUrl = cleanUrl(url.searchParams.get("sourceUrl") || "");
 
   if (!keyword) {
     sendJson(res, 400, { error: "missing_keyword", message: "请输入岗位关键词。" });
@@ -42,8 +48,8 @@ async function handleSearch(url, res) {
   }
 
   const tasks = [];
-  if (source === "all" || source === "github") tasks.push(searchGithub(keyword, city));
-  if (source === "all" || source === "v2ex") tasks.push(searchV2ex(keyword, city));
+  if (source === "v2ex") tasks.push(searchV2ex(keyword, city));
+  if (source === "url") tasks.push(fetchPublicJobPage(sourceUrl, keyword, city));
 
   const settled = await Promise.allSettled(tasks);
   const jobs = settled.flatMap((result) => (result.status === "fulfilled" ? result.value : []));
@@ -52,52 +58,11 @@ async function handleSearch(url, res) {
     .map((result) => result.reason?.message || "未知来源检索失败");
 
   sendJson(res, 200, {
-    query: { keyword, city, source },
+    query: { keyword, city, source, sourceUrl },
     searchedAt: new Date().toISOString(),
     jobs: dedupeJobs(jobs).slice(0, 24),
     errors,
   });
-}
-
-async function searchGithub(keyword, city) {
-  const queryParts = [
-    keyword,
-    city,
-    "招聘",
-    "in:title,body",
-    "is:issue",
-  ].filter(Boolean);
-
-  const apiUrl = new URL("https://api.github.com/search/issues");
-  apiUrl.searchParams.set("q", queryParts.join(" "));
-  apiUrl.searchParams.set("sort", "updated");
-  apiUrl.searchParams.set("order", "desc");
-  apiUrl.searchParams.set("per_page", "12");
-
-  const response = await fetchWithTimeout(apiUrl, {
-    headers: {
-      Accept: "application/vnd.github+json",
-      "User-Agent": "career-copilot-cn",
-    },
-  });
-
-  if (!response.ok) throw new Error(`GitHub 检索失败：${response.status}`);
-
-  const payload = await response.json();
-  return (payload.items || [])
-    .filter((item) => isLikelyJobPost(`${item.title}\n${item.body || ""}`, keyword, city))
-    .map((item) => ({
-      id: `github_${item.id}`,
-      title: normalizeTitle(item.title),
-      company: extractCompany(item.title, item.body) || "GitHub 招聘帖",
-      location: city || extractLocation(`${item.title}\n${item.body}`) || "地点待确认",
-      salary: extractSalary(`${item.title}\n${item.body}`),
-      source: "GitHub Issues",
-      sourceUrl: item.html_url,
-      description: summarizeText(item.body || item.title),
-      status: "待评估",
-      discoveredAt: new Date().toISOString(),
-    }));
 }
 
 async function searchV2ex(keyword, city) {
@@ -132,6 +97,38 @@ async function searchV2ex(keyword, city) {
       status: "待评估",
       discoveredAt: new Date().toISOString(),
     }));
+}
+
+async function fetchPublicJobPage(sourceUrl, keyword, city) {
+  if (!sourceUrl) throw new Error("请输入公开岗位页面链接");
+
+  const response = await fetchWithTimeout(sourceUrl, {
+    headers: {
+      Accept: "text/html, text/plain;q=0.9, */*;q=0.8",
+      "User-Agent": "career-copilot-cn",
+    },
+  });
+
+  if (!response.ok) throw new Error(`公开页面读取失败：${response.status}`);
+
+  const html = await response.text();
+  const text = htmlToText(html);
+  if (!isLikelyJobPost(text, keyword, city)) return [];
+
+  return [
+    {
+      id: `url_${Date.now()}`,
+      title: normalizeTitle(extractTitle(html) || keyword),
+      company: extractCompany(text) || "公司待确认",
+      location: city || extractLocation(text) || "地点待确认",
+      salary: extractSalary(text),
+      source: "公开网页",
+      sourceUrl,
+      description: summarizeText(text),
+      status: "待评估",
+      discoveredAt: new Date().toISOString(),
+    },
+  ];
 }
 
 async function fetchWithTimeout(url, options = {}) {
@@ -177,6 +174,14 @@ function clean(value) {
   return String(value).trim().slice(0, 80);
 }
 
+function cleanUrl(value) {
+  const text = String(value).trim();
+  if (!text) return "";
+  const url = new URL(text);
+  if (!["http:", "https:"].includes(url.protocol)) throw new Error("只支持 http/https 链接");
+  return url.toString();
+}
+
 function dedupeJobs(jobs) {
   const seen = new Set();
   return jobs.filter((job) => {
@@ -204,6 +209,24 @@ function extractCompany(title, body = "") {
     if (match) return match[1].trim();
   }
   return "";
+}
+
+function extractTitle(html) {
+  const match = String(html || "").match(/<title[^>]*>([^<]+)<\/title>/i);
+  return match ? htmlToText(match[1]) : "";
+}
+
+function htmlToText(html) {
+  return String(html || "")
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function extractLocation(text) {
@@ -256,4 +279,12 @@ function summarizeText(text) {
     .replace(/\s+/g, " ")
     .trim()
     .slice(0, 900);
+}
+
+function selfCheck() {
+  const assert = require("node:assert");
+  assert.equal(isLikelyJobPost("上海 Java 后端招聘，薪资 20-30K，投递简历", "Java", "上海"), true);
+  assert.equal(isLikelyJobPost("每日信息流 RSS Java 上海 CVE 漏洞", "Java", "上海"), false);
+  assert.equal(extractSalary("薪资 18-30K，13薪"), "18-30K");
+  assert.equal(htmlToText("<title>岗位</title><script>bad()</script> Java"), "岗位 Java");
 }

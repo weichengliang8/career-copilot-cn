@@ -66,7 +66,7 @@ searchForm.addEventListener("submit", async (event) => {
   const params = new URLSearchParams(Object.fromEntries(formData.entries()));
 
   searchStatus.textContent = "检索中";
-  searchResults.innerHTML = '<p class="empty">正在检索公开岗位来源...</p>';
+  searchResults.innerHTML = '<p class="empty">正在检索岗位来源...</p>';
 
   try {
     const response = await fetch(`/api/search?${params.toString()}`);
@@ -78,7 +78,7 @@ searchForm.addEventListener("submit", async (event) => {
     searchStatus.textContent = `${payload.jobs.length} 个结果`;
   } catch (error) {
     searchStatus.textContent = "检索失败";
-    searchResults.innerHTML = `<p class="empty">${error.message}。请确认本地服务已启动，并且网络可访问公开来源。</p>`;
+    searchResults.innerHTML = `<p class="empty">${error.message}。如果是公开页面链接，请确认页面不需要登录。</p>`;
   }
 });
 
@@ -187,7 +187,7 @@ function renderSearchResults(results, errors = []) {
   if (!results.length) {
     const empty = document.createElement("p");
     empty.className = "empty";
-    empty.textContent = "没有搜到合适结果。可以换一个关键词，或只搜 GitHub/V2EX 单一来源。";
+    empty.textContent = "没有搜到合适结果。可以换关键词，或粘贴一个公开岗位页面链接。";
     searchResults.appendChild(empty);
     return;
   }

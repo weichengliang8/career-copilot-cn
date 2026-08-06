@@ -117,7 +117,7 @@ form,
 }
 
 .search-form {
-  grid-template-columns: minmax(220px, 1fr) minmax(160px, 220px) minmax(180px, 220px) auto;
+  grid-template-columns: minmax(200px, 1fr) minmax(130px, 180px) minmax(150px, 180px) minmax(220px, 1fr) auto;
   align-items: end;
 }
 
