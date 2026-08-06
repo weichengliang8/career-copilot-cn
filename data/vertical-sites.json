@@ -70,5 +70,125 @@
       { "name": "电鸭社区", "host": "eleduck.com" },
       { "name": "程序员客栈", "host": "proginn.com" }
     ]
+  },
+  {
+    "keywords": "互联网|程序员|开发|前端|后端|测试|运维|算法|产品经理|设计师|数据分析|安全",
+    "label": "互联网技术入口",
+    "sites": [
+      { "name": "拉勾", "host": "lagou.com" },
+      { "name": "牛客", "host": "nowcoder.com" },
+      { "name": "V2EX Jobs", "host": "v2ex.com" },
+      { "name": "掘金", "host": "juejin.cn" },
+      { "name": "开源中国", "host": "oschina.net" }
+    ]
+  },
+  {
+    "keywords": "金融|银行|证券|基金|保险|风控|投研|理财|信贷|精算",
+    "label": "金融行业入口",
+    "sites": [
+      { "name": "金融英才网", "host": "bankhr.com" },
+      { "name": "中国金融人才网", "host": "jrjob88.com" },
+      { "name": "保险英才网", "host": "insurancehr.com" }
+    ]
+  },
+  {
+    "keywords": "律师|法务|法律|合规|知识产权|专利|商标",
+    "label": "法律合规入口",
+    "sites": [
+      { "name": "智拾网", "host": "zhishilaw.com" },
+      { "name": "律新社", "host": "lvxinshe.com" },
+      { "name": "IPRdaily", "host": "iprdaily.cn" }
+    ]
+  },
+  {
+    "keywords": "制造|机械|机电|自动化|电气|模具|数控|质量|工艺|设备",
+    "label": "制造业入口",
+    "sites": [
+      { "name": "机械英才网", "host": "mechr.com" },
+      { "name": "一览机械", "host": "jx.job1001.com" },
+      { "name": "制造业人才网", "host": "mfgjob.com" }
+    ]
+  },
+  {
+    "keywords": "物流|供应链|仓储|货运|采购|报关|单证|快递",
+    "label": "物流供应链入口",
+    "sites": [
+      { "name": "物流英才网", "host": "wl.job1001.com" },
+      { "name": "中国物流招聘网", "host": "56job.com" },
+      { "name": "采购招聘", "host": "caigou.com.cn" }
+    ]
+  },
+  {
+    "keywords": "地产|物业|招商|商业地产|置业|房产|案场",
+    "label": "地产物业入口",
+    "sites": [
+      { "name": "房地产英才网", "host": "fdc.job1001.com" },
+      { "name": "物业英才网", "host": "wy.job1001.com" },
+      { "name": "房产人才网", "host": "fdcjob.com" }
+    ]
+  },
+  {
+    "keywords": "设计|UI|UX|平面|视觉|插画|动画|室内|景观|工业设计",
+    "label": "设计创意入口",
+    "sites": [
+      { "name": "站酷", "host": "zcool.com.cn" },
+      { "name": "UI 中国", "host": "ui.cn" },
+      { "name": "设计癖", "host": "shejipi.com" }
+    ]
+  },
+  {
+    "keywords": "传媒|新媒体|编辑|记者|文案|编导|影视|短视频|主播|运营",
+    "label": "传媒内容入口",
+    "sites": [
+      { "name": "传媒英才网", "host": "media.job1001.com" },
+      { "name": "新榜", "host": "newrank.cn" },
+      { "name": "数英", "host": "digitaling.com" }
+    ]
+  },
+  {
+    "keywords": "酒店|旅游|民宿|导游|餐饮|厨师|前厅|客房",
+    "label": "酒店旅游餐饮入口",
+    "sites": [
+      { "name": "最佳东方", "host": "veryeast.cn" },
+      { "name": "旅游人才网", "host": "tourjob.net" },
+      { "name": "餐饮杰", "host": "cy58.com" }
+    ]
+  },
+  {
+    "keywords": "汽车|新能源车|4S|售后|维修|车险|汽车销售",
+    "label": "汽车行业入口",
+    "sites": [
+      { "name": "汽车人才网", "host": "carjob.com.cn" },
+      { "name": "盖世汽车", "host": "gasgoo.com" },
+      { "name": "中国汽车人才网", "host": "carhr.com.cn" }
+    ]
+  },
+  {
+    "keywords": "能源|电力|光伏|风电|储能|环保|水处理|化工",
+    "label": "能源环保入口",
+    "sites": [
+      { "name": "电力英才网", "host": "epjob88.com" },
+      { "name": "北极星招聘", "host": "hr.bjx.com.cn" },
+      { "name": "环保人才网", "host": "hbjob88.com" },
+      { "name": "化工英才网", "host": "chenhr.com" }
+    ]
+  },
+  {
+    "keywords": "农林|农业|养殖|畜牧|园艺|种植|兽医",
+    "label": "农林牧渔入口",
+    "sites": [
+      { "name": "农才网", "host": "njob.com.cn" },
+      { "name": "畜牧人才网", "host": "xumurc.com" },
+      { "name": "中国农业人才网", "host": "agrihr.com" }
+    ]
+  },
+  {
+    "keywords": "航空|航天|机场|空乘|飞行|机务|无人机",
+    "label": "航空航天入口",
+    "sites": [
+      { "name": "民航资源网", "host": "carnoc.com" },
+      { "name": "航空人才网", "host": "hkjob.net" },
+      { "name": "航空英才网", "host": "aeroh.cn" }
+    ]
   }
 ]
