@@ -207,6 +207,13 @@ function renderSearchResults(results, errors = []) {
     link.style.display = job.sourceUrl ? "" : "none";
 
     const importButton = card.querySelector('[data-action="import"]');
+    if (job.kind === "portal") {
+      importButton.textContent = "打开搜索";
+      importButton.addEventListener("click", () => window.open(job.sourceUrl, "_blank", "noreferrer"));
+      searchResults.appendChild(card);
+      return;
+    }
+
     importButton.disabled = jobs.some((item) => getJobKey(item) === getJobKey(job));
     importButton.textContent = importButton.disabled ? "已导入" : "导入岗位池";
     importButton.addEventListener("click", () => {

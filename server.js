@@ -39,7 +39,7 @@ server.listen(PORT, () => {
 async function handleSearch(url, res) {
   const keyword = clean(url.searchParams.get("keyword") || "后端");
   const city = clean(url.searchParams.get("city") || "");
-  const source = clean(url.searchParams.get("source") || "v2ex");
+  const source = clean(url.searchParams.get("source") || "cn");
   const sourceUrl = cleanUrl(url.searchParams.get("sourceUrl") || "");
 
   if (!keyword) {
@@ -48,6 +48,7 @@ async function handleSearch(url, res) {
   }
 
   const tasks = [];
+  if (source === "cn") tasks.push(searchCnPortals(keyword, city));
   if (source === "v2ex") tasks.push(searchV2ex(keyword, city));
   if (source === "url") tasks.push(fetchPublicJobPage(sourceUrl, keyword, city));
 
@@ -63,6 +64,29 @@ async function handleSearch(url, res) {
     jobs: dedupeJobs(jobs).slice(0, 24),
     errors,
   });
+}
+
+function searchCnPortals(keyword, city) {
+  const query = [city, keyword].filter(Boolean).join(" ");
+  const encoded = encodeURIComponent(query);
+  return [
+    ["Boss 直聘", `https://www.zhipin.com/web/geek/job?query=${encoded}`],
+    ["猎聘", `https://www.liepin.com/zhaopin/?key=${encoded}`],
+    ["智联招聘", `https://sou.zhaopin.com/?kw=${encoded}`],
+    ["前程无忧", `https://we.51job.com/pc/search?keyword=${encoded}`],
+  ].map(([name, url], index) => ({
+    id: `portal_${index}`,
+    title: `${name} 搜索：${query}`,
+    company: "国内招聘搜索入口",
+    location: city || "不限城市",
+    salary: "打开后筛选",
+    source: name,
+    sourceUrl: url,
+    description: "这个入口不绕过平台登录，也不抓取页面。打开后在招聘网站查看真实岗位，再复制 JD 或岗位链接回来分析。",
+    status: "搜索入口",
+    kind: "portal",
+    discoveredAt: new Date().toISOString(),
+  }));
 }
 
 async function searchV2ex(keyword, city) {
@@ -287,4 +311,5 @@ function selfCheck() {
   assert.equal(isLikelyJobPost("每日信息流 RSS Java 上海 CVE 漏洞", "Java", "上海"), false);
   assert.equal(extractSalary("薪资 18-30K，13薪"), "18-30K");
   assert.equal(htmlToText("<title>岗位</title><script>bad()</script> Java"), "岗位 Java");
+  assert.equal(searchCnPortals("工程造价", "上海").length, 4);
 }
