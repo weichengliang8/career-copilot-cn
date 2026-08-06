@@ -1,4 +1,5 @@
 const STORAGE_KEY = "career-copilot-cn.jobs";
+const API_BASE = location.protocol === "file:" ? "http://localhost:5173" : "";
 
 const statusOptions = ["待评估", "准备投递", "已投递", "已沟通", "已约面", "Offer", "不合适"];
 
@@ -69,7 +70,7 @@ searchForm.addEventListener("submit", async (event) => {
   searchResults.innerHTML = '<p class="empty">正在检索岗位来源...</p>';
 
   try {
-    const response = await fetch(`/api/search?${params.toString()}`);
+    const response = await fetch(`${API_BASE}/api/search?${params.toString()}`);
     const payload = await response.json();
 
     if (!response.ok) throw new Error(payload.message || "检索失败");
@@ -78,7 +79,7 @@ searchForm.addEventListener("submit", async (event) => {
     searchStatus.textContent = `${payload.jobs.length} 个结果`;
   } catch (error) {
     searchStatus.textContent = "检索失败";
-    searchResults.innerHTML = `<p class="empty">${error.message}。如果是公开页面链接，请确认页面不需要登录。</p>`;
+    searchResults.innerHTML = `<p class="empty">${error.message}。请先运行 node server.js，再打开 http://localhost:5173。</p>`;
   }
 });
 

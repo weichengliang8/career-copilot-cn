@@ -46,6 +46,8 @@ http://localhost:5173
 
 如果使用 Windows PowerShell，也可以运行 `npm.cmd start`。直接运行 `npm start` 可能会被本机脚本执行策略拦截。
 
+Windows 也可以直接双击 `start-career-copilot.cmd`，它会启动本地服务并打开页面。
+
 ## 项目结构
 
 ```text
