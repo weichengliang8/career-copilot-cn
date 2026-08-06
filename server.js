@@ -68,14 +68,50 @@ async function handleSearch(url, res) {
 }
 
 function searchVerticalSite(keyword, city, site) {
+  if (!site.trim()) return recommendedSites(keyword, city);
+
   const host = cleanSite(site);
+  return sitePortal(host, keyword, city, "自定义行业网站入口");
+}
+
+function recommendedSites(keyword, city) {
+  const text = keyword.toLowerCase();
+  const groups = [
+    {
+      test: /工程|造价|建筑|土木|施工|建造|监理|预算|招投标/,
+      label: "建筑工程垂直入口",
+      sites: ["buildinghr.com", "job.buildhr.com", "jzrc.net"],
+    },
+    {
+      test: /医疗|护士|医生|药师|医院|临床|影像|检验/,
+      label: "医疗健康垂直入口",
+      sites: ["jobmd.cn", "doctorjob.com.cn"],
+    },
+    {
+      test: /教师|教育|教培|课程|学校|幼师/,
+      label: "教育行业垂直入口",
+      sites: ["jiaoshi.com.cn", "teacheredu.cn"],
+    },
+    {
+      test: /外贸|跨境|电商|亚马逊|运营/,
+      label: "外贸电商垂直入口",
+      sites: ["cifnews.com", "ennews.com"],
+    },
+  ];
+
+  const group = groups.find((item) => item.test.test(text));
+  if (!group) return [];
+  return group.sites.map((site) => sitePortal(site, keyword, city, group.label)).flat();
+}
+
+function sitePortal(host, keyword, city, label) {
   const query = [city, keyword].filter(Boolean).join(" ");
   const baiduQuery = encodeURIComponent(`site:${host} ${query} 招聘`);
   return [
     {
       id: `site_${host}`,
       title: `${host} 站内搜索：${query}`,
-      company: "行业垂直网站入口",
+      company: label,
       location: city || "不限城市",
       salary: "打开后筛选",
       source: host,
@@ -343,4 +379,5 @@ function selfCheck() {
   assert.equal(htmlToText("<title>岗位</title><script>bad()</script> Java"), "岗位 Java");
   assert.equal(searchCnPortals("工程造价", "上海").length, 4);
   assert.equal(searchVerticalSite("工程造价", "上海", "buildinghr.com")[0].kind, "portal");
+  assert.ok(searchVerticalSite("工程造价", "上海", "").length > 0);
 }
