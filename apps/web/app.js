@@ -246,6 +246,7 @@ function renderJobs() {
     setText(card, "matchScore", `${analysis.matchScore}`);
     setText(card, "trustScore", `${analysis.trustScore}`);
     setText(card, "opening", analysis.opening);
+    setText(card, "fullDescription", job.description || "暂无 JD 原文。");
 
     const status = card.querySelector('[data-field="status"]');
     statusOptions.forEach((option) => {
@@ -261,7 +262,17 @@ function renderJobs() {
 
     fillList(card, "risks", analysis.risks);
     fillList(card, "questions", analysis.questions);
+    bindDescriptionToggle(card);
     jobList.appendChild(card);
+  });
+}
+
+function bindDescriptionToggle(root) {
+  const button = root.querySelector('[data-action="toggle-description"]');
+  const body = root.querySelector('[data-field="fullDescription"]');
+  button.addEventListener("click", () => {
+    body.hidden = !body.hidden;
+    button.textContent = body.hidden ? "显示全部 JD" : "收起 JD";
   });
 }
 
